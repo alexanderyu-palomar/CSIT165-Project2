@@ -1,11 +1,12 @@
 ---
 title: "CSIT165_Project2"
 author: "Alex Yu and Audrey Lewis"
-date: "12/14/2020"
+date: "12/19/2020"
 output: html_document
+urlcolor: blue
 ---
 
-```{r Library, include=TRUE}
+```{r Library, include=FALSE}
 #for wget
 library(HelpersMG)
 #for reading in data
@@ -26,31 +27,97 @@ library(kableExtra)
 library(ggplot2)
 #install for date function
 library(lubridate)
+#install tidyverse
+library(tidyverse)
 
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-```{r Files, include=TRUE}
+```{r Files, include=FALSE}
 
 #Reading files for confirmedGlobal
 urlfile="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
-confirmedGlobal<-read_csv(url(urlfile))
+ConfirmedGlobal <- read_csv(url(urlfile))
 
 #Reading files for DeathsGlobal
 urlfile="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
-DeathsGlobal<-read_csv(url(urlfile))
+DeathsGlobal <- read_csv(url(urlfile))
 
 #Reading files for RecoveredGlobal
 urlfile="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv"
-RecoveredGlobal<-read_csv(url(urlfile))
+RecoveredGlobal <- read_csv(url(urlfile))
 
 ```
 
 
-```{bash }
+<!-- testing section only -->
+------
 
-git log --pretty=format:"%nSubject: %s%nAuthor: %aN%nDate: %aD%nBody: %b"
+# Testing Section Only
 
+```{r testUpload-1, echo=FALSE}
+head(ConfirmedGlobal)
 ```
 
+If the ConfirmedGlobal table was loaded correctly, you should see a tibble above with that data.
+
+```{r testUpload-2, echo=FALSE}
+head(DeathsGlobal)
+```
+
+If the DeathsGlobal table was loaded correctly, you should see a tibble above with that data.
+
+```{r testUpload-3, echo=FALSE}
+head(RecoveredGlobal)
+```
+
+If the RecoveredGlobal table was loaded correctly, you should see a tibble above with that data.
+
+------
+<!-- end testing section -->
+
+
+
+# Objective 1 - Global Trajectory
+
+<!-- assigned to Audrey -->
+<!-- enter code here -->
+
+
+# Objective 2 - Global Map
+
+<!-- assigned to Audrey -->
+<!-- enter code here -->
+
+
+# Objective 3 - Narrowing Down Hot Spots
+
+<!-- assigned to Audrey -->
+<!-- enter code here -->
+
+
+# Objective 4 - Zooming Into California
+
+<!-- assigned to Alex -->
+<!-- enter code here -->
+
+
+# Objective 5 - Digging Deeper
+
+<!-- assigned to Alex -->
+<!-- enter code here -->
+
+
+
+
+<!-- commenting this out until submission
+     since it throws an error -->
+
+<!-- ```{bash }
+# commenting this out until submission
+# since it throws an error
+#
+# git log --pretty=format:"%nSubject: %s%nAuthor: %aN%nDate: %aD%nBody: %b"
+
+``` -->
