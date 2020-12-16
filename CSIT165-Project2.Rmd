@@ -9,8 +9,6 @@ urlcolor: blue
 ```{r Library, include=FALSE}
 #for wget
 library(HelpersMG)
-#for reading in data
-library(readr)
 #install stringr
 library(stringr)
 #install dplyr
@@ -36,17 +34,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r Files, include=FALSE}
 
-#Reading files for confirmedGlobal
-urlfile="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
-ConfirmedGlobal <- read_csv(url(urlfile))
+#Adding Confirmed_Global
+wget("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv")
 
-#Reading files for DeathsGlobal
-urlfile="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
-DeathsGlobal <- read_csv(url(urlfile))
+#Adding Deaths_Global
+wget("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv")
 
-#Reading files for RecoveredGlobal
-urlfile="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv"
-RecoveredGlobal <- read_csv(url(urlfile))
+#Adding Recovered_Global
+wget("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv")
 
 ```
 
@@ -57,19 +52,19 @@ RecoveredGlobal <- read_csv(url(urlfile))
 # Testing Section Only
 
 ```{r testUpload-1, echo=FALSE}
-head(ConfirmedGlobal)
+#head(ConfirmedGlobal)
 ```
 
 If the ConfirmedGlobal table was loaded correctly, you should see a tibble above with that data.
 
 ```{r testUpload-2, echo=FALSE}
-head(DeathsGlobal)
+#head(DeathsGlobal)
 ```
 
 If the DeathsGlobal table was loaded correctly, you should see a tibble above with that data.
 
 ```{r testUpload-3, echo=FALSE}
-head(RecoveredGlobal)
+#head(RecoveredGlobal)
 ```
 
 If the RecoveredGlobal table was loaded correctly, you should see a tibble above with that data.
