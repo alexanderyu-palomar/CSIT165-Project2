@@ -11,7 +11,7 @@
 
 <meta name="author" content="Alex Yu and Audrey Lewis" />
 
-<meta name="date" content="2020-12-14" />
+<meta name="date" content="2020-12-19" />
 
 <title>CSIT165_Project2</title>
 
@@ -365,124 +365,161 @@ summary {
 
 <h1 class="title toc-ignore">CSIT165_Project2</h1>
 <h4 class="author">Alex Yu and Audrey Lewis</h4>
-<h4 class="date">12/14/2020</h4>
+<h4 class="date">12/19/2020</h4>
 
 </div>
 
 
-<pre class="r"><code>#for wget
-library(HelpersMG)</code></pre>
-<pre><code>## Warning: package &#39;HelpersMG&#39; was built under R version 4.0.3</code></pre>
-<pre><code>## Loading required package: lme4</code></pre>
-<pre><code>## Warning: package &#39;lme4&#39; was built under R version 4.0.3</code></pre>
-<pre><code>## Loading required package: Matrix</code></pre>
-<pre><code>## Loading required package: coda</code></pre>
-<pre><code>## Warning: package &#39;coda&#39; was built under R version 4.0.3</code></pre>
-<pre class="r"><code>#for reading in data
-library(readr)</code></pre>
-<pre><code>## Warning: package &#39;readr&#39; was built under R version 4.0.3</code></pre>
-<pre class="r"><code>#install stringr
-library(stringr)</code></pre>
-<pre><code>## Warning: package &#39;stringr&#39; was built under R version 4.0.3</code></pre>
-<pre class="r"><code>#install dplyr
-library(dplyr)</code></pre>
-<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 4.0.3</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>#install tidyr
-library(tidyr)</code></pre>
-<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 4.0.3</code></pre>
-<pre><code>## 
-## Attaching package: &#39;tidyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:Matrix&#39;:
-## 
-##     expand, pack, unpack</code></pre>
-<pre class="r"><code>#install magrittr
-library(magrittr)</code></pre>
-<pre><code>## Warning: package &#39;magrittr&#39; was built under R version 4.0.3</code></pre>
-<pre><code>## 
-## Attaching package: &#39;magrittr&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:tidyr&#39;:
-## 
-##     extract</code></pre>
-<pre class="r"><code>#install data table
-library(data.table)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;data.table&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
-## 
-##     between, first, last</code></pre>
-<pre class="r"><code>#install Kable
-library(kableExtra)</code></pre>
-<pre><code>## Warning: package &#39;kableExtra&#39; was built under R version 4.0.3</code></pre>
-<pre><code>## 
-## Attaching package: &#39;kableExtra&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
-## 
-##     group_rows</code></pre>
-<pre class="r"><code>#install for visualization
-library(ggplot2)</code></pre>
-<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 4.0.3</code></pre>
-<pre class="r"><code>#install for date function
-library(lubridate)</code></pre>
-<pre><code>## Warning: package &#39;lubridate&#39; was built under R version 4.0.3</code></pre>
-<pre><code>## 
-## Attaching package: &#39;lubridate&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:data.table&#39;:
-## 
-##     hour, isoweek, mday, minute, month, quarter, second, wday, week,
-##     yday, year</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     date, intersect, setdiff, union</code></pre>
-<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE)</code></pre>
-<pre class="r"><code>#Reading files for confirmedGlobal
-urlfile=&quot;https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv&quot;
-confirmedGlobal&lt;-read_csv(url(urlfile))</code></pre>
-<pre><code>## 
-## -- Column specification --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-## cols(
-##   .default = col_double(),
-##   `Province/State` = col_character(),
-##   `Country/Region` = col_character()
-## )
-## i Use `spec()` for the full column specifications.</code></pre>
-<pre class="r"><code>#Reading files for DeathsGlobal
-urlfile=&quot;https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv&quot;
-DeathsGlobal&lt;-read_csv(url(urlfile))</code></pre>
-<pre><code>## 
-## -- Column specification --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-## cols(
-##   .default = col_double(),
-##   `Province/State` = col_character(),
-##   `Country/Region` = col_character()
-## )
-## i Use `spec()` for the full column specifications.</code></pre>
-<pre class="r"><code>#Reading files for RecoveredGlobal
-urlfile=&quot;https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv&quot;
-RecoveredGlobal&lt;-read_csv(url(urlfile))</code></pre>
-<pre><code>## 
-## -- Column specification --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-## cols(
-##   .default = col_double(),
-##   `Province/State` = col_character(),
-##   `Country/Region` = col_character()
-## )
-## i Use `spec()` for the full column specifications.</code></pre>
-<pre class="bash"><code>
-git log --pretty=format:&quot;%nSubject: %s%nAuthor: %aN%nDate: %aD%nBody: %b&quot;
-</code></pre>
-<pre><code>## 
-## Subject: Initial commit
-## Author: alexanderyu-palomar
-## Date: Sun, 13 Dec 2020 18:38:41 -0800
-## Body:</code></pre>
+<div id="section" class="section level2">
+<h2><!-- testing section only --></h2>
+</div>
+<div id="testing-section-only" class="section level1">
+<h1>Testing Section Only</h1>
+<pre><code>## # A tibble: 6 x 333
+##   `Province/State` `Country/Region`   Lat   Long `1/22/20` `1/23/20` `1/24/20`
+##   &lt;chr&gt;            &lt;chr&gt;            &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 &lt;NA&gt;             Afghanistan       33.9  67.7          0         0         0
+## 2 &lt;NA&gt;             Albania           41.2  20.2          0         0         0
+## 3 &lt;NA&gt;             Algeria           28.0   1.66         0         0         0
+## 4 &lt;NA&gt;             Andorra           42.5   1.52         0         0         0
+## 5 &lt;NA&gt;             Angola           -11.2  17.9          0         0         0
+## 6 &lt;NA&gt;             Antigua and Bar~  17.1 -61.8          0         0         0
+## # ... with 326 more variables: `1/25/20` &lt;dbl&gt;, `1/26/20` &lt;dbl&gt;,
+## #   `1/27/20` &lt;dbl&gt;, `1/28/20` &lt;dbl&gt;, `1/29/20` &lt;dbl&gt;, `1/30/20` &lt;dbl&gt;,
+## #   `1/31/20` &lt;dbl&gt;, `2/1/20` &lt;dbl&gt;, `2/2/20` &lt;dbl&gt;, `2/3/20` &lt;dbl&gt;,
+## #   `2/4/20` &lt;dbl&gt;, `2/5/20` &lt;dbl&gt;, `2/6/20` &lt;dbl&gt;, `2/7/20` &lt;dbl&gt;,
+## #   `2/8/20` &lt;dbl&gt;, `2/9/20` &lt;dbl&gt;, `2/10/20` &lt;dbl&gt;, `2/11/20` &lt;dbl&gt;,
+## #   `2/12/20` &lt;dbl&gt;, `2/13/20` &lt;dbl&gt;, `2/14/20` &lt;dbl&gt;, `2/15/20` &lt;dbl&gt;,
+## #   `2/16/20` &lt;dbl&gt;, `2/17/20` &lt;dbl&gt;, `2/18/20` &lt;dbl&gt;, `2/19/20` &lt;dbl&gt;,
+## #   `2/20/20` &lt;dbl&gt;, `2/21/20` &lt;dbl&gt;, `2/22/20` &lt;dbl&gt;, `2/23/20` &lt;dbl&gt;,
+## #   `2/24/20` &lt;dbl&gt;, `2/25/20` &lt;dbl&gt;, `2/26/20` &lt;dbl&gt;, `2/27/20` &lt;dbl&gt;,
+## #   `2/28/20` &lt;dbl&gt;, `2/29/20` &lt;dbl&gt;, `3/1/20` &lt;dbl&gt;, `3/2/20` &lt;dbl&gt;,
+## #   `3/3/20` &lt;dbl&gt;, `3/4/20` &lt;dbl&gt;, `3/5/20` &lt;dbl&gt;, `3/6/20` &lt;dbl&gt;,
+## #   `3/7/20` &lt;dbl&gt;, `3/8/20` &lt;dbl&gt;, `3/9/20` &lt;dbl&gt;, `3/10/20` &lt;dbl&gt;,
+## #   `3/11/20` &lt;dbl&gt;, `3/12/20` &lt;dbl&gt;, `3/13/20` &lt;dbl&gt;, `3/14/20` &lt;dbl&gt;,
+## #   `3/15/20` &lt;dbl&gt;, `3/16/20` &lt;dbl&gt;, `3/17/20` &lt;dbl&gt;, `3/18/20` &lt;dbl&gt;,
+## #   `3/19/20` &lt;dbl&gt;, `3/20/20` &lt;dbl&gt;, `3/21/20` &lt;dbl&gt;, `3/22/20` &lt;dbl&gt;,
+## #   `3/23/20` &lt;dbl&gt;, `3/24/20` &lt;dbl&gt;, `3/25/20` &lt;dbl&gt;, `3/26/20` &lt;dbl&gt;,
+## #   `3/27/20` &lt;dbl&gt;, `3/28/20` &lt;dbl&gt;, `3/29/20` &lt;dbl&gt;, `3/30/20` &lt;dbl&gt;,
+## #   `3/31/20` &lt;dbl&gt;, `4/1/20` &lt;dbl&gt;, `4/2/20` &lt;dbl&gt;, `4/3/20` &lt;dbl&gt;,
+## #   `4/4/20` &lt;dbl&gt;, `4/5/20` &lt;dbl&gt;, `4/6/20` &lt;dbl&gt;, `4/7/20` &lt;dbl&gt;,
+## #   `4/8/20` &lt;dbl&gt;, `4/9/20` &lt;dbl&gt;, `4/10/20` &lt;dbl&gt;, `4/11/20` &lt;dbl&gt;,
+## #   `4/12/20` &lt;dbl&gt;, `4/13/20` &lt;dbl&gt;, `4/14/20` &lt;dbl&gt;, `4/15/20` &lt;dbl&gt;,
+## #   `4/16/20` &lt;dbl&gt;, `4/17/20` &lt;dbl&gt;, `4/18/20` &lt;dbl&gt;, `4/19/20` &lt;dbl&gt;,
+## #   `4/20/20` &lt;dbl&gt;, `4/21/20` &lt;dbl&gt;, `4/22/20` &lt;dbl&gt;, `4/23/20` &lt;dbl&gt;,
+## #   `4/24/20` &lt;dbl&gt;, `4/25/20` &lt;dbl&gt;, `4/26/20` &lt;dbl&gt;, `4/27/20` &lt;dbl&gt;,
+## #   `4/28/20` &lt;dbl&gt;, `4/29/20` &lt;dbl&gt;, `4/30/20` &lt;dbl&gt;, `5/1/20` &lt;dbl&gt;,
+## #   `5/2/20` &lt;dbl&gt;, `5/3/20` &lt;dbl&gt;, ...</code></pre>
+<p>If the ConfirmedGlobal table was loaded correctly, you should see a tibble above with that data.</p>
+<pre><code>## # A tibble: 6 x 333
+##   `Province/State` `Country/Region`   Lat   Long `1/22/20` `1/23/20` `1/24/20`
+##   &lt;chr&gt;            &lt;chr&gt;            &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 &lt;NA&gt;             Afghanistan       33.9  67.7          0         0         0
+## 2 &lt;NA&gt;             Albania           41.2  20.2          0         0         0
+## 3 &lt;NA&gt;             Algeria           28.0   1.66         0         0         0
+## 4 &lt;NA&gt;             Andorra           42.5   1.52         0         0         0
+## 5 &lt;NA&gt;             Angola           -11.2  17.9          0         0         0
+## 6 &lt;NA&gt;             Antigua and Bar~  17.1 -61.8          0         0         0
+## # ... with 326 more variables: `1/25/20` &lt;dbl&gt;, `1/26/20` &lt;dbl&gt;,
+## #   `1/27/20` &lt;dbl&gt;, `1/28/20` &lt;dbl&gt;, `1/29/20` &lt;dbl&gt;, `1/30/20` &lt;dbl&gt;,
+## #   `1/31/20` &lt;dbl&gt;, `2/1/20` &lt;dbl&gt;, `2/2/20` &lt;dbl&gt;, `2/3/20` &lt;dbl&gt;,
+## #   `2/4/20` &lt;dbl&gt;, `2/5/20` &lt;dbl&gt;, `2/6/20` &lt;dbl&gt;, `2/7/20` &lt;dbl&gt;,
+## #   `2/8/20` &lt;dbl&gt;, `2/9/20` &lt;dbl&gt;, `2/10/20` &lt;dbl&gt;, `2/11/20` &lt;dbl&gt;,
+## #   `2/12/20` &lt;dbl&gt;, `2/13/20` &lt;dbl&gt;, `2/14/20` &lt;dbl&gt;, `2/15/20` &lt;dbl&gt;,
+## #   `2/16/20` &lt;dbl&gt;, `2/17/20` &lt;dbl&gt;, `2/18/20` &lt;dbl&gt;, `2/19/20` &lt;dbl&gt;,
+## #   `2/20/20` &lt;dbl&gt;, `2/21/20` &lt;dbl&gt;, `2/22/20` &lt;dbl&gt;, `2/23/20` &lt;dbl&gt;,
+## #   `2/24/20` &lt;dbl&gt;, `2/25/20` &lt;dbl&gt;, `2/26/20` &lt;dbl&gt;, `2/27/20` &lt;dbl&gt;,
+## #   `2/28/20` &lt;dbl&gt;, `2/29/20` &lt;dbl&gt;, `3/1/20` &lt;dbl&gt;, `3/2/20` &lt;dbl&gt;,
+## #   `3/3/20` &lt;dbl&gt;, `3/4/20` &lt;dbl&gt;, `3/5/20` &lt;dbl&gt;, `3/6/20` &lt;dbl&gt;,
+## #   `3/7/20` &lt;dbl&gt;, `3/8/20` &lt;dbl&gt;, `3/9/20` &lt;dbl&gt;, `3/10/20` &lt;dbl&gt;,
+## #   `3/11/20` &lt;dbl&gt;, `3/12/20` &lt;dbl&gt;, `3/13/20` &lt;dbl&gt;, `3/14/20` &lt;dbl&gt;,
+## #   `3/15/20` &lt;dbl&gt;, `3/16/20` &lt;dbl&gt;, `3/17/20` &lt;dbl&gt;, `3/18/20` &lt;dbl&gt;,
+## #   `3/19/20` &lt;dbl&gt;, `3/20/20` &lt;dbl&gt;, `3/21/20` &lt;dbl&gt;, `3/22/20` &lt;dbl&gt;,
+## #   `3/23/20` &lt;dbl&gt;, `3/24/20` &lt;dbl&gt;, `3/25/20` &lt;dbl&gt;, `3/26/20` &lt;dbl&gt;,
+## #   `3/27/20` &lt;dbl&gt;, `3/28/20` &lt;dbl&gt;, `3/29/20` &lt;dbl&gt;, `3/30/20` &lt;dbl&gt;,
+## #   `3/31/20` &lt;dbl&gt;, `4/1/20` &lt;dbl&gt;, `4/2/20` &lt;dbl&gt;, `4/3/20` &lt;dbl&gt;,
+## #   `4/4/20` &lt;dbl&gt;, `4/5/20` &lt;dbl&gt;, `4/6/20` &lt;dbl&gt;, `4/7/20` &lt;dbl&gt;,
+## #   `4/8/20` &lt;dbl&gt;, `4/9/20` &lt;dbl&gt;, `4/10/20` &lt;dbl&gt;, `4/11/20` &lt;dbl&gt;,
+## #   `4/12/20` &lt;dbl&gt;, `4/13/20` &lt;dbl&gt;, `4/14/20` &lt;dbl&gt;, `4/15/20` &lt;dbl&gt;,
+## #   `4/16/20` &lt;dbl&gt;, `4/17/20` &lt;dbl&gt;, `4/18/20` &lt;dbl&gt;, `4/19/20` &lt;dbl&gt;,
+## #   `4/20/20` &lt;dbl&gt;, `4/21/20` &lt;dbl&gt;, `4/22/20` &lt;dbl&gt;, `4/23/20` &lt;dbl&gt;,
+## #   `4/24/20` &lt;dbl&gt;, `4/25/20` &lt;dbl&gt;, `4/26/20` &lt;dbl&gt;, `4/27/20` &lt;dbl&gt;,
+## #   `4/28/20` &lt;dbl&gt;, `4/29/20` &lt;dbl&gt;, `4/30/20` &lt;dbl&gt;, `5/1/20` &lt;dbl&gt;,
+## #   `5/2/20` &lt;dbl&gt;, `5/3/20` &lt;dbl&gt;, ...</code></pre>
+<p>If the DeathsGlobal table was loaded correctly, you should see a tibble above with that data.</p>
+<pre><code>## # A tibble: 6 x 333
+##   `Province/State` `Country/Region`   Lat   Long `1/22/20` `1/23/20` `1/24/20`
+##   &lt;chr&gt;            &lt;chr&gt;            &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+## 1 &lt;NA&gt;             Afghanistan       33.9  67.7          0         0         0
+## 2 &lt;NA&gt;             Albania           41.2  20.2          0         0         0
+## 3 &lt;NA&gt;             Algeria           28.0   1.66         0         0         0
+## 4 &lt;NA&gt;             Andorra           42.5   1.52         0         0         0
+## 5 &lt;NA&gt;             Angola           -11.2  17.9          0         0         0
+## 6 &lt;NA&gt;             Antigua and Bar~  17.1 -61.8          0         0         0
+## # ... with 326 more variables: `1/25/20` &lt;dbl&gt;, `1/26/20` &lt;dbl&gt;,
+## #   `1/27/20` &lt;dbl&gt;, `1/28/20` &lt;dbl&gt;, `1/29/20` &lt;dbl&gt;, `1/30/20` &lt;dbl&gt;,
+## #   `1/31/20` &lt;dbl&gt;, `2/1/20` &lt;dbl&gt;, `2/2/20` &lt;dbl&gt;, `2/3/20` &lt;dbl&gt;,
+## #   `2/4/20` &lt;dbl&gt;, `2/5/20` &lt;dbl&gt;, `2/6/20` &lt;dbl&gt;, `2/7/20` &lt;dbl&gt;,
+## #   `2/8/20` &lt;dbl&gt;, `2/9/20` &lt;dbl&gt;, `2/10/20` &lt;dbl&gt;, `2/11/20` &lt;dbl&gt;,
+## #   `2/12/20` &lt;dbl&gt;, `2/13/20` &lt;dbl&gt;, `2/14/20` &lt;dbl&gt;, `2/15/20` &lt;dbl&gt;,
+## #   `2/16/20` &lt;dbl&gt;, `2/17/20` &lt;dbl&gt;, `2/18/20` &lt;dbl&gt;, `2/19/20` &lt;dbl&gt;,
+## #   `2/20/20` &lt;dbl&gt;, `2/21/20` &lt;dbl&gt;, `2/22/20` &lt;dbl&gt;, `2/23/20` &lt;dbl&gt;,
+## #   `2/24/20` &lt;dbl&gt;, `2/25/20` &lt;dbl&gt;, `2/26/20` &lt;dbl&gt;, `2/27/20` &lt;dbl&gt;,
+## #   `2/28/20` &lt;dbl&gt;, `2/29/20` &lt;dbl&gt;, `3/1/20` &lt;dbl&gt;, `3/2/20` &lt;dbl&gt;,
+## #   `3/3/20` &lt;dbl&gt;, `3/4/20` &lt;dbl&gt;, `3/5/20` &lt;dbl&gt;, `3/6/20` &lt;dbl&gt;,
+## #   `3/7/20` &lt;dbl&gt;, `3/8/20` &lt;dbl&gt;, `3/9/20` &lt;dbl&gt;, `3/10/20` &lt;dbl&gt;,
+## #   `3/11/20` &lt;dbl&gt;, `3/12/20` &lt;dbl&gt;, `3/13/20` &lt;dbl&gt;, `3/14/20` &lt;dbl&gt;,
+## #   `3/15/20` &lt;dbl&gt;, `3/16/20` &lt;dbl&gt;, `3/17/20` &lt;dbl&gt;, `3/18/20` &lt;dbl&gt;,
+## #   `3/19/20` &lt;dbl&gt;, `3/20/20` &lt;dbl&gt;, `3/21/20` &lt;dbl&gt;, `3/22/20` &lt;dbl&gt;,
+## #   `3/23/20` &lt;dbl&gt;, `3/24/20` &lt;dbl&gt;, `3/25/20` &lt;dbl&gt;, `3/26/20` &lt;dbl&gt;,
+## #   `3/27/20` &lt;dbl&gt;, `3/28/20` &lt;dbl&gt;, `3/29/20` &lt;dbl&gt;, `3/30/20` &lt;dbl&gt;,
+## #   `3/31/20` &lt;dbl&gt;, `4/1/20` &lt;dbl&gt;, `4/2/20` &lt;dbl&gt;, `4/3/20` &lt;dbl&gt;,
+## #   `4/4/20` &lt;dbl&gt;, `4/5/20` &lt;dbl&gt;, `4/6/20` &lt;dbl&gt;, `4/7/20` &lt;dbl&gt;,
+## #   `4/8/20` &lt;dbl&gt;, `4/9/20` &lt;dbl&gt;, `4/10/20` &lt;dbl&gt;, `4/11/20` &lt;dbl&gt;,
+## #   `4/12/20` &lt;dbl&gt;, `4/13/20` &lt;dbl&gt;, `4/14/20` &lt;dbl&gt;, `4/15/20` &lt;dbl&gt;,
+## #   `4/16/20` &lt;dbl&gt;, `4/17/20` &lt;dbl&gt;, `4/18/20` &lt;dbl&gt;, `4/19/20` &lt;dbl&gt;,
+## #   `4/20/20` &lt;dbl&gt;, `4/21/20` &lt;dbl&gt;, `4/22/20` &lt;dbl&gt;, `4/23/20` &lt;dbl&gt;,
+## #   `4/24/20` &lt;dbl&gt;, `4/25/20` &lt;dbl&gt;, `4/26/20` &lt;dbl&gt;, `4/27/20` &lt;dbl&gt;,
+## #   `4/28/20` &lt;dbl&gt;, `4/29/20` &lt;dbl&gt;, `4/30/20` &lt;dbl&gt;, `5/1/20` &lt;dbl&gt;,
+## #   `5/2/20` &lt;dbl&gt;, `5/3/20` &lt;dbl&gt;, ...</code></pre>
+<p>If the RecoveredGlobal table was loaded correctly, you should see a tibble above with that data.</p>
+<hr />
+<!-- end testing section -->
+</div>
+<div id="objective-1---global-trajectory" class="section level1">
+<h1>Objective 1 - Global Trajectory</h1>
+<!-- assigned to Audrey -->
+<!-- enter code here -->
+</div>
+<div id="objective-2---global-map" class="section level1">
+<h1>Objective 2 - Global Map</h1>
+<!-- assigned to Audrey -->
+<!-- enter code here -->
+</div>
+<div id="objective-3---narrowing-down-hot-spots" class="section level1">
+<h1>Objective 3 - Narrowing Down Hot Spots</h1>
+<!-- assigned to Audrey -->
+<!-- enter code here -->
+</div>
+<div id="objective-4---zooming-into-california" class="section level1">
+<h1>Objective 4 - Zooming Into California</h1>
+<!-- assigned to Alex -->
+<!-- enter code here -->
+</div>
+<div id="objective-5---digging-deeper" class="section level1">
+<h1>Objective 5 - Digging Deeper</h1>
+<!-- assigned to Alex -->
+<!-- enter code here -->
+<!-- commenting this out until submission
+     since it throws an error -->
+<!-- ```{bash }
+# commenting this out until submission
+# since it throws an error
+#
+# git log --pretty=format:"%nSubject: %s%nAuthor: %aN%nDate: %aD%nBody: %b"
+
+``` -->
+</div>
 
 
 
