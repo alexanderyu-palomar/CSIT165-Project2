@@ -37,16 +37,29 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r Files, include=FALSE}
 
 #Reading files for confirmedGlobal
-urlfile="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
-ConfirmedGlobal <- read_csv(url(urlfile))
+# urlfile="./time_series_covid19_confirmed_global.csv"
+# ConfirmedGlobal <- read_csv(url(urlfile))
+ConfirmedGlobal <- read_csv("./time_series_covid19_confirmed_global.csv")
 
 #Reading files for DeathsGlobal
-urlfile="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
-DeathsGlobal <- read_csv(url(urlfile))
+#urlfile="./time_series_covid19_deaths_global.csv"
+#DeathsGlobal <- read_csv(url(urlfile))
+DeathsGlobal <- read_csv("./time_series_covid19_deaths_global.csv")
 
 #Reading files for RecoveredGlobal
-urlfile="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv"
-RecoveredGlobal <- read_csv(url(urlfile))
+# urlfile="./time_series_covid19_recovered_global.csv"
+# RecoveredGlobal <- read_csv(url(urlfile))
+RecoveredGlobal <- read_csv("./time_series_covid19_recovered_global.csv")
+
+#Reading files for confirmedGlobal
+# urlfile="./time_series_covid19_confirmed_US.csv"
+# ConfirmedUS <- read_csv(url(urlfile))
+ConfirmedUS <- read_csv("./time_series_covid19_confirmed_US.csv")
+
+#Reading files for DeathsGlobal
+# urlfile="./time_series_covid19_deaths_US.csv"
+# DeathsUS <- read_csv(url(urlfile))
+DeathsUS <- read_csv("./time_series_covid19_deaths_US.csv")
 
 ```
 
@@ -73,6 +86,18 @@ head(RecoveredGlobal)
 ```
 
 If the RecoveredGlobal table was loaded correctly, you should see a tibble above with that data.
+
+```{r testUpload-4, echo=FALSE}
+head(ConfirmedUS)
+```
+
+If the ConfirmedUS table was loaded correctly, you should see a tibble above with that data.
+
+```{r testUpload-5, echo=FALSE}
+head(DeathsUS)
+```
+
+If the DeathsUS table was loaded correctly, you should see a tibble above with that data.
 
 ------
 <!-- end testing section -->
