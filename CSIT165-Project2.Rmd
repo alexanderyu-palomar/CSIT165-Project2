@@ -29,6 +29,8 @@ library(ggplot2)
 library(lubridate)
 #install tidyverse
 library(tidyverse)
+#install cowplot
+library(cowplot)
 
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -124,14 +126,135 @@ If the DeathsUS table was loaded correctly, you should see a tibble above with t
 
 # Objective 4 - Zooming Into California
 
-<!-- assigned to Alex -->
-<!-- enter code here -->
+<!-- Chart 1 -->
 
+```{r obj4-code1, echo=TRUE}
+# creates new data frame for only CA confirmed cases
+dfConfirmedCAChartData <- ConfirmedUS %>%
+  
+  # removes all columns with numeric values that aren't case counts
+  select(-(`UID`)) %>%
+  select(-(`code3`)) %>%
+  select(-(`FIPS`)) %>%
+  select(-(`Lat`)) %>%
+  select(-(`Long_`)) %>%
+  
+  # retains only the California row
+  filter(`Province_State` == "California") %>%
+  
+  # groups by Country/Region
+  group_by(`Province_State`) %>%
+  
+  # totals all columns that are numeric
+  summarise_if(is.numeric, sum) %>%
+
+  # gathers data into long form
+  gather(key=Date, value=`Confirmed Cases`, -`Province_State`) %>%
+  
+  # converts the date column into real dates for the chart
+  mutate(`Date`=as.Date(`Date`, format = "%m/%d/%y"))
+```
+
+```{r obj4-code2, echo=TRUE}
+# creates new data frame for only CA deaths
+dfDeathsCAChartData <- DeathsUS %>%
+  
+  # removes all columns with numeric values that aren't case counts
+  select(-(`UID`)) %>%
+  select(-(`code3`)) %>%
+  select(-(`FIPS`)) %>%
+  select(-(`Lat`)) %>%
+  select(-(`Long_`)) %>%
+  select(-(`Population`)) %>%
+  
+  # retains only the California row
+  filter(`Province_State` == "California") %>%
+  
+  # groups by Country/Region
+  group_by(`Province_State`) %>%
+  
+  # totals all columns that are numeric
+  summarise_if(is.numeric, sum) %>%
+  
+  # gathers data into long form
+  gather(key=Date, value=`Deaths`, -`Province_State`) %>%
+  
+  # converts the date column into real dates for the chart
+  mutate(`Date`=as.Date(`Date`, format = "%m/%d/%y"))
+```
+
+Below is a chart showing the deaths and confirmed cases for the state of California over time. The black vertical line provides a visual representation of when the first shutdowns occurred on March 19, 2020.
+
+```{r obj4-chart1, echo=TRUE}
+obj4chart1colors <- c("Confirmed Cases" = "blue", "Deaths" = "red")
+
+ggplot() +
+  geom_line(data = dfConfirmedCAChartData,
+            aes(x = `Date`, y = `Confirmed Cases`,
+            color = "Confirmed Cases")) +
+  geom_line(data = dfDeathsCAChartData,
+            aes(x = `Date`, y = `Deaths`,
+            color = "Deaths")) +
+  scale_y_continuous(labels = scales::comma) +
+  labs(x = "Date", y = "Cases", color = "California Total") +
+  ggtitle("California's Trajectory for COVID-19") +
+  scale_color_manual(values = obj4chart1colors) +
+  geom_vline(xintercept = as.numeric(as.Date("2020-03-19")),
+             color = "black")
+```
+
+
+<!-- Chart 2 -->
+
+```{r obj4-code3, echo=TRUE}
+# reuses earlier data frame for only CA confirmed cases by county
+dfConfirmedCAChartData <- ConfirmedUS %>%
+  
+  # removes all columns with numeric values that aren't case counts
+  select(-(`UID`)) %>%
+  select(-(`code3`)) %>%
+  select(-(`FIPS`)) %>%
+  select(-(`Lat`)) %>%
+  select(-(`Long_`)) %>%
+  
+  # retains only the California rows
+  filter(`Province_State` == "California") %>%
+  
+  # retains only the rows for San Diego, Riverside, LA
+  filter(`Admin2` %in%
+           c("San Diego", "Riverside", "Los Angeles")) %>%
+  
+  # groups by County (aka Admin2)
+  group_by(`Admin2`) %>%
+  
+  # totals all columns that are numeric
+  summarise_if(is.numeric, sum) %>%
+
+  # gathers data into long form
+  gather(key=Date, value=`Confirmed Cases`, -`Admin2`) %>%
+  
+  # converts the date column into real dates for the chart
+  mutate(`Date`=as.Date(`Date`, format = "%m/%d/%y"))
+```
+
+Below is a chart showing the confirmed cases over time, only for the counties of Los Angeles, Riverside, and San Diego. The black vertical line provides a visual representation of when the first shutdowns occurred on March 19, 2020.
+
+```{r obj4-chart2, echo=TRUE}
+ggplot(dfConfirmedCAChartData,
+       aes(x = `Date`, y = `Confirmed Cases`,
+           group = `Admin2`)) +
+  geom_line(aes(color=`Admin2`)) +
+  ggtitle("Southern California Confirmed Cases of COVID-19") +
+  scale_y_continuous(labels = scales::comma) +
+  labs(x = "Date", y = "Cases", color = "Counties") +
+  geom_vline(xintercept = as.numeric(as.Date("2020-03-19")),
+             color = "black")
+```
 
 # Objective 5 - Digging Deeper
 
-<!-- assigned to Alex -->
-<!-- enter code here -->
+
+
 
 
 
