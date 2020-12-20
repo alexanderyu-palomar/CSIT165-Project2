@@ -142,7 +142,7 @@ dfConfirmedCAChartData <- ConfirmedUS %>%
   # retains only the California row
   filter(`Province_State` == "California") %>%
   
-  # groups by Country/Region
+  # groups by State
   group_by(`Province_State`) %>%
   
   # totals all columns that are numeric
@@ -170,7 +170,7 @@ dfDeathsCAChartData <- DeathsUS %>%
   # retains only the California row
   filter(`Province_State` == "California") %>%
   
-  # groups by Country/Region
+  # groups by State
   group_by(`Province_State`) %>%
   
   # totals all columns that are numeric
@@ -188,6 +188,7 @@ Below is a chart showing the deaths and confirmed cases for the state of Califor
 ```{r obj4-chart1, echo=TRUE}
 obj4chart1colors <- c("Confirmed Cases" = "blue", "Deaths" = "red")
 
+# these are two disparate time series glued together
 ggplot() +
   geom_line(data = dfConfirmedCAChartData,
             aes(x = `Date`, y = `Confirmed Cases`,
@@ -253,8 +254,60 @@ ggplot(dfConfirmedCAChartData,
 
 # Objective 5 - Digging Deeper
 
+```{r obj5-code1, echo=TRUE}
+# creates new data frame for only the most recent day's deaths
+dfDeathsUSLast <- DeathsUS %>%
+  
+  # select only the UID, Population, and last (most recent) columns
+  select(c(`UID`, `Population`, tail(names(.),1))) %>%
 
+  # renames last column to Deaths
+  rename(Deaths = tail(names(.),1)) %>%
 
+  # filters out rows with a population or death count of 0
+  filter(`Population` > 0) %>%
+  filter(`Deaths` > 0)
+
+# creates new data frame for only the most recent day's confirmed cases
+dfConfirmedUSLast <- ConfirmedUS %>%
+  
+  # select only the UID and last (most recent) columns
+  select(c(`UID`, tail(names(.),1))) %>%
+
+  # renames last column to Confirmed Cases
+  rename("Confirmed Cases" = tail(names(.),1))
+
+# combines two data frames by matching UID via inner join
+dfCombinedUSLast <- dfDeathsUSLast %>%
+  inner_join(dfConfirmedUSLast, by = "UID")
+
+  ### we do not need to gather this data into long form
+  # gathers data into long form
+  # gather(key=Type, value=Count, -`UID`)
+  
+```
+
+Below is a *cowplot* showing two side-by-side charts highlighting the relationship between Confirmed Cases versus total Population, and Deaths versus Confirmed Cases. Both plots have the axes log transformed in order to better accommodate the varying scales at larger and smaller values.
+
+```{r obj5-chart1, echo=TRUE}
+# building the cowplot
+p1 <- ggplot(dfCombinedUSLast,
+       aes(`Population`, `Confirmed Cases`)) +
+  geom_point(color = "blue") +
+  ggtitle("Confirmations vs. Population") +
+  scale_x_log10(labels = scales::comma) +
+  scale_y_log10(labels = scales::comma)
+
+p2 <- ggplot(dfCombinedUSLast,
+       aes(`Confirmed Cases`, `Deaths`)) +
+  geom_point(color = "red") +
+  ggtitle("Deaths vs. Confirmations") +
+  scale_x_log10(labels = scales::comma) +
+  scale_y_log10(labels = scales::comma)
+
+plot_grid(p1, p2)
+
+```
 
 
 
