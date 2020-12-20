@@ -2,7 +2,8 @@
 title: "CSIT165_Project2"
 author: "Alex Yu and Audrey Lewis"
 date: "12/19/2020"
-output: html_document
+output:
+  html_document: default
 urlcolor: blue
 ---
 
@@ -70,20 +71,14 @@ DeathsGlobal_Sort <- DeathsGlobal %>% gather(key="date", value="Deaths", -c(`Cou
 RecoveredGlobal_Sort <- RecoveredGlobal %>% gather(key="date", value="Recovered", -c(`Country/Region`, `Province/State`, Lat, Long)) %>% group_by(`Country/Region`, date) %>% summarize(Recovered=sum(Recovered))
 
 #Combining Data to one
-Combined_Data <- full_join(confirmedGlobal_Sort, DeathsGlobal_Sort) %>% full_join(RecoveredGlobal_Sort)
+Combined_Data <- full_join(confirmedGlobal_Sort, DeathsGlobal_Sort) %>% full_join(RecoveredGlobal_Sort) %>% group_by(`date`) %>% summarise_if(is.numeric, sum) %>% mutate(`date`=as.Date(`date`, format = "%m/%d/%y")) %>% gather(key=Type, value=Count, -`date`)
 
+ggplot(Combined_Data,
+ aes(x = `date`, y = `Count`,
+ group = `Type`)) +
+ geom_line(aes(color=`Type`)) +
+ ggtitle("Global Trajectory")
 
-#ggplot(Combined_Data, aes('Country/Region`,value)) + 
-  #geom_point() + 
-  #stat_smooth() +
-  #facet_wrap(~variable)
-
-#Combined_Data %>%
-#ggplot(aes(x = date, y = confirmed)) +
-      #geom_point(color = "darkorchid4") +
-      #labs(title = "Confirmed Plot",
-           #y = "confirmed",
-           #x = "date") + theme_bw(base_size = 10)
 
 ```
 
@@ -95,13 +90,15 @@ Create this map using leaflet for the most recent date as shown below. Notice th
 
 ```{r Objective2, echo=TRUE}
 #Creating map
-mapWorld <- borders("world", colour = "gray50", fill = "gray50")
+#Creating map for confirmedGlobal
+MapconfirmedGlobal <- select(confirmedGlobal, Long, Lat, `12/18/20`)
+#Creating map for DeathsGlobal
+MapDeathsGlobal <- select(DeathsGlobal, Long, Lat, `12/18/20`)
+#Creating map for RecoveredGlobal
+MapRecoveredGlobal <- select(RecoveredGlobal, Long, Lat, `12/18/20`)
+#Merging the 3 data 
+Map_Combined_Data <- full_join(MapconfirmedGlobal, MapDeathsGlobal) %>% full_join(MapRecoveredGlobal) %>% group_by(`12/18/20`)
 
-#Creating map plot -NO DATA YET
-map <- ggplot() + mapWorld
-
-#See the map
-map
 
 
 ```
@@ -110,22 +107,15 @@ map
 Seeing the global map of COVID-19 cases results in the stark realization that some countries are more affected than others. In order to narrow down your studies, create a table using kable from knitr listing the top countries as far as confirmations, recoveries, and deaths. Now that we are using RMarkdown to create HTML files, we have much more options for how we display our table. For reference on how to customize tables using knitr, visit this website. Consult the table below for an example of a customized table ranking cases by country. While it is not required to replicate this table exactly, it would be a fantastic challenge to show off your knitr prowess.
 
 ```{r Objective3, echo=TRUE}
-#Building Top 10 confirmed for table
-Top10Confirmed <- select(confirmedGlobal, `Country/Region`, `12/18/20`) %>% group_by(`Country/Region`) %>% mutate(confirmed=sum(`12/18/20`)) %>% arrange(-confirmed) %>% select(-`12/18/20`) %>% distinct() %>% head(10)
-
-#Building Top 10 Deaths for table
-Top10Deaths <- select(DeathsGlobal, `Country/Region`, `12/18/20`) %>% group_by(`Country/Region`) %>% mutate(Deaths=sum(`12/18/20`)) %>% arrange(-Deaths) %>% select(-`12/18/20`) %>% distinct() %>% head(10)
-
-#Building Top 10 Recovered for table
-Top10Recovered <- select(RecoveredGlobal, `Country/Region`, `12/18/20`) %>% group_by(`Country/Region`) %>% mutate(Recovered=sum(`12/18/20`)) %>% arrange(-Recovered) %>% select(-`12/18/20`) %>% distinct() %>% head(10)
 
 #Merged the 3 tables together
-MergedData <-full_join(Top10Confirmed, Top10Deaths) %>% full_join(Top10Recovered)
+#Combined_Data_Table <- Combined_Data %>% filter(`date`=="12/18/20") %>% arrange(desc(`confirmed`)) %>%head(15)
 
-#Creating table using kbl
-kbl(MergedData) %>%
-  kable_classic() %>%
-add_header_above(c(" ", "confirmed" = 1, "Deaths" = 1, "Recovered" = 1))
+ #Creating table using kbl
+ #kbl(Combined_Data_Table[2:5]) %>%
+ #kable_classic() %>%
+ #add_header_above(c("", "confirmed" = 1, "Deaths" = 1, "Recovered" = 1))
+
 ```
 
 
